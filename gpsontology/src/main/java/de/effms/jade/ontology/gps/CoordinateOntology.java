@@ -4,6 +4,7 @@ import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.schema.ConceptSchema;
+import jade.content.schema.PredicateSchema;
 import jade.content.schema.PrimitiveSchema;
 
 public class CoordinateOntology extends Ontology implements CoordinateVocabulary
@@ -26,6 +27,10 @@ public class CoordinateOntology extends Ontology implements CoordinateVocabulary
             coordinateConcept.add(LATITUDE, (PrimitiveSchema) this.getSchema(BasicOntology.FLOAT));
             coordinateConcept.addFacet(LATITUDE, new ValidLatitude());
             this.add(coordinateConcept, Coordinate.class);
+
+            PredicateSchema locatedAtPredicate = new PredicateSchema(LOCATED_AT);
+            locatedAtPredicate.add(COORDINATE, coordinateConcept);
+            this.add(locatedAtPredicate, LocatedAt.class);
         } catch (OntologyException oe) {
             oe.printStackTrace();
         }
