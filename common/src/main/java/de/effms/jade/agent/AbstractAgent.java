@@ -6,7 +6,6 @@ import de.effms.jade.agent.service.ServiceProvidingAgent;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
-import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -16,7 +15,7 @@ import org.slf4j.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractAgent extends Agent implements LifecycleProvidingAgent, ServiceProvidingAgent
+public abstract class AbstractAgent extends jade.core.Agent implements Agent, LifecycleProvidingAgent, ServiceProvidingAgent
 {
     private Set<LifecycleSubscriber> lifecycleSubscribers = new HashSet<>();
 
