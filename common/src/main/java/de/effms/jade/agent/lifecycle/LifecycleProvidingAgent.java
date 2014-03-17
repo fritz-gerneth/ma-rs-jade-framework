@@ -1,6 +1,6 @@
 package de.effms.jade.agent.lifecycle;
 
-public interface LifecyclePublisher
+public interface LifecycleProvidingAgent
 {
     public void registerLifecycleSubscriber(LifecycleSubscriber subscriber);
 

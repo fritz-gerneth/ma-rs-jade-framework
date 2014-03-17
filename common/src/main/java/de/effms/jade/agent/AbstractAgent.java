@@ -1,6 +1,6 @@
 package de.effms.jade.agent;
 
-import de.effms.jade.agent.lifecycle.LifecyclePublisher;
+import de.effms.jade.agent.lifecycle.LifecycleProvidingAgent;
 import de.effms.jade.agent.lifecycle.LifecycleSubscriber;
 import de.effms.jade.agent.service.ServiceProvidingAgent;
 import jade.content.lang.Codec;
@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractAgent extends Agent implements LifecyclePublisher, ServiceProvidingAgent
+public abstract class AbstractAgent extends Agent implements LifecycleProvidingAgent, ServiceProvidingAgent
 {
     private Set<LifecycleSubscriber> lifecycleSubscribers = new HashSet<>();
 
