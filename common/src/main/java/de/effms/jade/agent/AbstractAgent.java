@@ -28,6 +28,11 @@ public abstract class AbstractAgent extends jade.core.Agent implements Agent, Li
         this.registerLifecycleSubscriber(new DFRegistrationHandler());
     }
 
+    public jade.core.Agent asJadeAgent()
+    {
+        return this;
+    }
+
     @Override
     public void registerLifecycleSubscriber(LifecycleSubscriber subscriber)
     {

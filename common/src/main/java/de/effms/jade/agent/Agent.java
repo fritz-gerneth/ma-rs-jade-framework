@@ -16,6 +16,8 @@ import java.io.OutputStream;
  */
 public interface Agent extends Runnable, Serializable, TimerListener
 {
+    public jade.core.Agent asJadeAgent();
+
     void restartLater(Behaviour b, long millis);
 
     void doTimeOut(Timer t);
