@@ -48,7 +48,8 @@ public abstract class AbstractAgent extends Agent implements LifecyclePublisher,
             try {
                 subscriber.onSetup();
             } catch (Exception e) {
-                e.printStackTrace();
+                log().error(e.getMessage());
+                log().debug(e.getStackTrace().toString());
             }
         }
     }
@@ -60,7 +61,8 @@ public abstract class AbstractAgent extends Agent implements LifecyclePublisher,
             try {
                 subscriber.onTakeDown();
             } catch (Exception e) {
-                e.printStackTrace();
+                log().error(e.getMessage());
+                log().debug(e.getStackTrace().toString());
             }
         }
     }
