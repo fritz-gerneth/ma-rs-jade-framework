@@ -2,7 +2,6 @@ package de.effms.jade.agent;
 
 import de.effms.jade.agent.lifecycle.LifecycleProvidingAgent;
 import de.effms.jade.agent.lifecycle.LifecycleSubscriber;
-import de.effms.jade.agent.service.ServiceProvidingAgent;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
@@ -15,7 +14,7 @@ import org.slf4j.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractAgent extends jade.core.Agent implements Agent, LifecycleProvidingAgent, ServiceProvidingAgent
+public abstract class AbstractAgent extends jade.core.Agent implements Agent, LifecycleProvidingAgent
 {
     private Set<LifecycleSubscriber> lifecycleSubscribers = new HashSet<>();
 
@@ -69,29 +68,6 @@ public abstract class AbstractAgent extends jade.core.Agent implements Agent, Li
                 log().debug(e.getStackTrace().toString());
             }
         }
-    }
-
-    @Override
-    public void registerService(ServiceDescription serviceDescription, Ontology ontology)
-    {
-        this.registerService(serviceDescription, ontology, new SLCodec());
-    }
-
-    @Override
-    public void registerService(ServiceDescription serviceDescription, Ontology ontology, Codec language)
-    {
-        serviceDescription.addLanguages(language.getName());
-        serviceDescription.addOntologies(ontology.getName());
-        agentDescription.addServices(serviceDescription);
-
-        log().info("Added service " + serviceDescription.getName());
-        log().debug(serviceDescription.toString());
-
-        this.getContentManager().registerLanguage(language);
-        this.getContentManager().registerOntology(ontology);
-
-        log().info("Registered language " + language);
-        log().info("Registered ontology " + ontology);
     }
 
     protected abstract Logger log();
