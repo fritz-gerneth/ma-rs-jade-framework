@@ -1,6 +1,7 @@
 package de.effms.jade.service.query;
 
 import de.effms.jade.agent.Agent;
+import jade.content.Predicate;
 import jade.content.Term;
 import jade.content.abs.AbsContentElement;
 import jade.content.abs.AbsIRE;
@@ -187,8 +188,8 @@ public class RemoteQueryable implements Queryable
                 e.printStackTrace();
             }
 
-            if (contentElement instanceof Term) {
-                this.callback.onQueryRefResult(this.query, (Term) contentElement);
+            if (contentElement instanceof AbsPredicate) {
+                this.callback.onQueryRefResult(this.query, (AbsPredicate) contentElement);
             }
         }
     }

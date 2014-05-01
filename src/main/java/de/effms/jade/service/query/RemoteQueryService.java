@@ -88,7 +88,7 @@ public class RemoteQueryService
         }
 
         @Override
-        public void onQueryRefResult(AbsIRE query, Term result)
+        public void onQueryRefResult(AbsIRE query, AbsPredicate result)
         {
             AbsObject resultTerm = null;
             try {

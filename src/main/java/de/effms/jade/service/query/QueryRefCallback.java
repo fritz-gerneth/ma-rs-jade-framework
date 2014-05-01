@@ -7,7 +7,7 @@ import jade.content.abs.AbsPredicate;
 
 public interface QueryRefCallback
 {
-    public void onQueryRefResult(AbsIRE query, Term result);
+    public void onQueryRefResult(AbsIRE query, AbsPredicate result);
 
     public void onLogicError(AbsPredicate query, AbsContentElement response);
 }
