@@ -31,23 +31,8 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             agentConcept.addSuperSchema(recommenderConcept);
 
             final ConceptSchema actionConcept = new ConceptSchema(ACTION);
-            actionConcept.add(ACTION_SUBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME));
-            actionConcept.add(ACTION_OBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
-            AgentActionSchema recommendationConcept = new AgentActionSchema(RECOMMENDATION);
-            recommendationConcept.addSuperSchema(actionConcept);
-            recommendationConcept.addFacet(ACTION_OBJECT, new Facet()
-            {
-                @Override
-                public void validate(AbsObject value, Ontology onto) throws OntologyException
-                {
-                    ObjectSchema valueSchema = onto.getSchema(value.getTypeName());
-                    if (!valueSchema.isCompatibleWith(actionConcept)) {
-                        throw new OntologyException("Value " + value + " is not an " + ACTION);
-                    }
-                }
-            });
-            recommendationConcept.add(RECOMMENDATION_REASON, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
+            ConceptSchema recommendationConcept = new AgentActionSchema(RECOMMENDATION);
 
             ConceptSchema preferenceConcept = new ConceptSchema(PREFERENCE);
             preferenceConcept.add(PREFERENCE_WHAT, (TermSchema) getSchema(TermSchema.BASE_NAME));
