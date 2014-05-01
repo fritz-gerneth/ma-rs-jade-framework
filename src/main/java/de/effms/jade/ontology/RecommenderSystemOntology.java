@@ -16,7 +16,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
     private RecommenderSystemOntology()
     {
-        super(RecommenderSystemVocabulary.NAME, BasicOntology.getInstance());
+        super(RecommenderSystemVocabulary.NAME, RelationalOntology.getInstance());
 
         try {
             ConceptSchema conceptSchema = new ConceptSchema(ConceptSchema.BASE_NAME);
