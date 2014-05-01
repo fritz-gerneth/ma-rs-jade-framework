@@ -3,7 +3,6 @@ package de.effms.jade.ontology;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
-import jade.content.onto.ReflectiveIntrospector;
 import jade.content.schema.*;
 
 public class RecommenderSystemOntology extends Ontology implements RecommenderSystemVocabulary
@@ -17,7 +16,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
     private RecommenderSystemOntology()
     {
-        super(RecommenderSystemVocabulary.NAME, new Ontology[] {RelationalOntology.getInstance(), BasicOntology.getInstance()}, new ReflectiveIntrospector());
+        super(RecommenderSystemVocabulary.NAME, BasicOntology.getInstance());
 
         try {
             ConceptSchema conceptSchema = new ConceptSchema(ConceptSchema.BASE_NAME);
