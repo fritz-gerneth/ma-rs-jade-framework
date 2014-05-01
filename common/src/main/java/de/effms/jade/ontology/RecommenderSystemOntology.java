@@ -39,7 +39,6 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             ConceptSchema preferenceConcept = new ConceptSchema(PREFERENCE);
             preferenceConcept.add(PREFERENCE_WHAT, (TermSchema) getSchema(TermSchema.BASE_NAME));
             preferenceConcept.add(PREFERENCE_RATING, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));
-            userConcept.add(PREFERS, preferenceConcept, 0, ObjectSchema.UNLIMITED);
 
             ConceptSchema situationConcept = new ConceptSchema(SITUATION);
             userConcept.add(SITUATED, situationConcept, 0, ObjectSchema.UNLIMITED);

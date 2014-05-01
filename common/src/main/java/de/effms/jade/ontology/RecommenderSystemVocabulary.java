@@ -18,8 +18,6 @@ public interface RecommenderSystemVocabulary
 
     public static String RECOMMENDATION_REASON = "rs_recommendation_reason";
 
-    public static String PREFERS = "rs_prefers";
-
     public static String PREFERENCE = "rs_preference";
 
     public static String PREFERENCE_WHAT = "rs_preference_what";
