@@ -37,8 +37,8 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
             final ConceptSchema actionConcept = new ConceptSchema(ACTION);
             actionConcept.addSuperSchema(itemConcept);
-            actionConcept.add(ACTION_SUBJECT, new ConceptSchema(ConceptSchema.BASE_NAME));
-            actionConcept.add(ACTION_OBJECT, new ConceptSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
+            actionConcept.add(ACTION_SUBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME));
+            actionConcept.add(ACTION_OBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
             PredicateSchema doesPredicate = new PredicateSchema(DOES);
             doesPredicate.add(DOES_WHO, recommenderConcept);
@@ -65,7 +65,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
                     }
                 }
             });
-            recommendsConcept.add(RECOMMENDS_REASON, new ConceptSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
+            recommendsConcept.add(RECOMMENDS_REASON, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
             ConceptSchema preferenceConcept = new ConceptSchema(PREFERENCE);
             preferenceConcept.add(PREFERENCE_WHAT, (TermSchema) getSchema(TermSchema.BASE_NAME));
