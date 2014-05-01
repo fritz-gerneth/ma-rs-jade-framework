@@ -20,6 +20,8 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
         super(RecommenderSystemVocabulary.NAME, new Ontology[] {RelationalOntology.getInstance(), BasicOntology.getInstance()}, new ReflectiveIntrospector());
 
         try {
+            ConceptSchema conceptSchema = new ConceptSchema(ConceptSchema.BASE_NAME);
+
             ConceptSchema recommenderConcept = new ConceptSchema(RECOMMENDER);
             recommenderConcept.addSuperSchema((ConceptSchema) getSchema(IDENTITY));
 
@@ -32,11 +34,11 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             final ConceptSchema actionConcept = new ConceptSchema(ACTION);
 
             ConceptSchema recommendationConcept = new AgentActionSchema(RECOMMENDATION);
-            recommendationConcept.add(RECOMMENDATION_SUBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME));
-            recommendationConcept.add(RECOMMENDATION_REASON, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME));
+            recommendationConcept.add(RECOMMENDATION_SUBJECT, conceptSchema);
+            recommendationConcept.add(RECOMMENDATION_REASON, conceptSchema);
 
             ConceptSchema preferenceConcept = new ConceptSchema(PREFERENCE);
-            preferenceConcept.add(PREFERENCE_WHAT, (TermSchema) getSchema(TermSchema.BASE_NAME));
+            preferenceConcept.add(PREFERENCE_WHAT, conceptSchema);
             preferenceConcept.add(PREFERENCE_RATING, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));
 
             ConceptSchema situationConcept = new ConceptSchema(SITUATION);

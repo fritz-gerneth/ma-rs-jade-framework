@@ -20,17 +20,19 @@ public class RelationalOntology extends Ontology implements RelationalVocabulary
         super(NAME, BasicOntology.getInstance());
 
         try {
+            ConceptSchema conceptSchema = new ConceptSchema(ConceptSchema.BASE_NAME);
+
             PredicateSchema doesPredicate = new PredicateSchema(DOES);
-            doesPredicate.add(DOES_WHO, getSchema(ConceptSchema.BASE_NAME));
-            doesPredicate.add(DOES_WHAT, getSchema(ConceptSchema.BASE_NAME));
+            doesPredicate.add(DOES_WHO, conceptSchema);
+            doesPredicate.add(DOES_WHAT, conceptSchema);
 
             PredicateSchema isPredicate = new PredicateSchema(IS);
-            isPredicate.add(IS_WHO, getSchema(ConceptSchema.BASE_NAME));
-            isPredicate.add(IS_WHAT, getSchema(ConceptSchema.BASE_NAME));
+            isPredicate.add(IS_WHO, conceptSchema);
+            isPredicate.add(IS_WHAT, conceptSchema);
 
             PredicateSchema hasPredicate = new PredicateSchema(HAS);
-            hasPredicate.add(HAS_WHO, getSchema(ConceptSchema.BASE_NAME));
-            hasPredicate.add(HAS_WHAT, getSchema(ConceptSchema.BASE_NAME));
+            hasPredicate.add(HAS_WHO, conceptSchema);
+            hasPredicate.add(HAS_WHAT, conceptSchema);
 
             final ConceptSchema identitySchema = new ConceptSchema(IDENTITY);
             identitySchema.add(IDENTITY_UID, (PrimitiveSchema) getSchema(BasicOntology.STRING));
