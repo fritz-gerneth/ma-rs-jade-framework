@@ -1,5 +1,6 @@
 package de.effms.jade.ontology;
 
+import jade.content.abs.AbsObject;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -31,8 +32,22 @@ public class RelationalOntology extends Ontology implements RelationalVocabulary
             hasPredicate.add(HAS_WHO, getSchema(ConceptSchema.BASE_NAME));
             hasPredicate.add(HAS_WHAT, getSchema(ConceptSchema.BASE_NAME));
 
+            final ConceptSchema identitySchema = new ConceptSchema(IDENTITY);
+            identitySchema.add(IDENTITY_UID, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+
             PredicateSchema identifiedBy = new PredicateSchema(IDENTIFIED);
             identifiedBy.addSuperSchema(isPredicate);
+            identifiedBy.addFacet(IS_WHAT, new Facet()
+            {
+                @Override
+                public void validate(AbsObject value, Ontology onto) throws OntologyException
+                {
+                    ObjectSchema valueSchema = onto.getSchema(value.getTypeName());
+                    if (!valueSchema.isCompatibleWith(identitySchema)) {
+                        throw new OntologyException("Value " + value + " is not an " + IDENTITY);
+                    }
+                }
+            });
 
             this.add(doesPredicate);
             this.add(isPredicate);

@@ -23,4 +23,8 @@ public interface RelationalVocabulary
     public static String HAS_WHAT = "rel_has_what";
 
     public static String IDENTIFIED = "rel_identified";
+
+    public static String IDENTITY = "rel_identity";
+
+    public static String IDENTITY_UID = "rel_identity_uid";
 }
