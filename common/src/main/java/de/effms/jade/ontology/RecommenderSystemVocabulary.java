@@ -24,7 +24,5 @@ public interface RecommenderSystemVocabulary
 
     public static String PREFERENCE_RATING = "rs_preference_rating";
 
-    public static String SITUATED = "rs_situated";
-
     public static String SITUATION = "rs_situation";
 }
