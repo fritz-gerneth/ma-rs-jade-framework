@@ -48,6 +48,10 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             isPredicate.add(RecommenderSystemVocabulary.IS_WHO, recommenderConcept);
             isPredicate.add(RecommenderSystemOntology.IS_WHAT, getSchema(ConceptSchema.BASE_NAME));
 
+            PredicateSchema hasPredicate = new PredicateSchema(RecommenderSystemOntology.HAS);
+            hasPredicate.add(RecommenderSystemOntology.HAS_WHO, recommenderConcept);
+            hasPredicate.add(RecommenderSystemOntology.HAS_WHAT, getSchema(ConceptSchema.BASE_NAME));
+
             AgentActionSchema recommendsConcept = new AgentActionSchema(RecommenderSystemVocabulary.RECOMMENDS);
             recommendsConcept.addSuperSchema(actionConcept);
             recommendsConcept.addFacet(RecommenderSystemVocabulary.ACTION_OBJECT, new Facet()
@@ -81,6 +85,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
             this.add(doesPredicate);
             this.add(isPredicate);
+            this.add(hasPredicate);
 
             this.add(recommendsConcept);
             this.add(preferenceConcept);

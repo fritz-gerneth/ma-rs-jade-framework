@@ -24,6 +24,12 @@ public interface RecommenderSystemVocabulary
 
     public static String IS_WHAT = "rs_what";
 
+    public static String HAS = "rs_has";
+
+    public static String HAS_WHO = "rs_has_who";
+
+    public static String HAS_WHAT = "rs_has_what";
+
     public static String AGENT = "rs_agent";
 
     public static String RECOMMENDER = "rs_recommender";
