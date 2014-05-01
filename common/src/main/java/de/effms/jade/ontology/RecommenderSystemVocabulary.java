@@ -18,9 +18,9 @@ public interface RecommenderSystemVocabulary
 
     public static String ACTION_OBJECT = "rs_action_object";
 
-    public static String RECOMMENDS = "rs_recommends";
+    public static String RECOMMENDATION = "rs_recommendation";
 
-    public static String RECOMMENDS_REASON = "rs_reason";
+    public static String RECOMMENDATION_REASON = "rs_recommendation_reason";
 
     public static String PREFERS = "rs_prefers";
 

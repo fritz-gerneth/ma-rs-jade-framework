@@ -36,9 +36,9 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             actionConcept.add(ACTION_SUBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME));
             actionConcept.add(ACTION_OBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
-            AgentActionSchema recommendsConcept = new AgentActionSchema(RECOMMENDS);
-            recommendsConcept.addSuperSchema(actionConcept);
-            recommendsConcept.addFacet(ACTION_OBJECT, new Facet()
+            AgentActionSchema recommendationConcept = new AgentActionSchema(RECOMMENDATION);
+            recommendationConcept.addSuperSchema(actionConcept);
+            recommendationConcept.addFacet(ACTION_OBJECT, new Facet()
             {
                 @Override
                 public void validate(AbsObject value, Ontology onto) throws OntologyException
@@ -49,7 +49,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
                     }
                 }
             });
-            recommendsConcept.add(RECOMMENDS_REASON, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
+            recommendationConcept.add(RECOMMENDATION_REASON, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
             ConceptSchema preferenceConcept = new ConceptSchema(PREFERENCE);
             preferenceConcept.add(PREFERENCE_WHAT, (TermSchema) getSchema(TermSchema.BASE_NAME));
@@ -66,7 +66,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             this.add(itemConcept);
             this.add(actionConcept);
 
-            this.add(recommendsConcept);
+            this.add(recommendationConcept);
             this.add(preferenceConcept);
             this.add(situationConcept);
         } catch (OntologyException e) {
