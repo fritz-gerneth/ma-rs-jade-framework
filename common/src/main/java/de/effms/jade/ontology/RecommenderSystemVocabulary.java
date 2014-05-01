@@ -12,6 +12,12 @@ public interface RecommenderSystemVocabulary
 
     public static String USER_NAME = "rs_user_name";
 
+    public static String DOES = "rs_does";
+
+    public static String DOES_WHO = "rs_does_who";
+
+    public static String DOES_WHAT = "rs_does_what";
+
     public static String AGENT = "rs_agent";
 
     public static String RECOMMENDER = "rs_recommender";

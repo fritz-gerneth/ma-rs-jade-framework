@@ -5,12 +5,7 @@ import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.ReflectiveIntrospector;
-import jade.content.schema.AgentActionSchema;
-import jade.content.schema.ConceptSchema;
-import jade.content.schema.Facet;
-import jade.content.schema.ObjectSchema;
-import jade.content.schema.PrimitiveSchema;
-import jade.content.schema.TermSchema;
+import jade.content.schema.*;
 
 public class RecommenderSystemOntology extends Ontology implements RecommenderSystemVocabulary
 {
@@ -45,6 +40,10 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             actionConcept.add(RecommenderSystemVocabulary.ACTION_SUBJECT, new ConceptSchema(ConceptSchema.BASE_NAME));
             actionConcept.add(RecommenderSystemVocabulary.ACTION_OBJECT, new ConceptSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
+            PredicateSchema doesPredicate = new PredicateSchema(RecommenderSystemOntology.DOES);
+            doesPredicate.add(RecommenderSystemVocabulary.DOES_WHO, recommenderConcept);
+            doesPredicate.add(RecommenderSystemOntology.DOES_WHAT, actionConcept);
+
             AgentActionSchema recommendsConcept = new AgentActionSchema(RecommenderSystemVocabulary.RECOMMENDS);
             recommendsConcept.addSuperSchema(actionConcept);
             recommendsConcept.addFacet(RecommenderSystemVocabulary.ACTION_OBJECT, new Facet()
@@ -75,6 +74,8 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
             this.add(itemConcept);
             this.add(actionConcept);
+
+            this.add(doesPredicate);
 
             this.add(recommendsConcept);
             this.add(preferenceConcept);
