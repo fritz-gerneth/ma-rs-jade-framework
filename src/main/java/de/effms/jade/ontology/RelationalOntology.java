@@ -34,8 +34,8 @@ public class RelationalOntology extends Ontology implements RelationalVocabulary
             hasPredicate.add(HAS_WHO, conceptSchema);
             hasPredicate.add(HAS_WHAT, conceptSchema);
 
-            final ConceptSchema identitySchema = new ConceptSchema(IDENTITY);
-            identitySchema.add(IDENTITY_UID, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            final ConceptSchema identityConcept = new ConceptSchema(IDENTITY);
+            identityConcept.add(IDENTITY_UID, (PrimitiveSchema) getSchema(BasicOntology.STRING));
 
             PredicateSchema identifiedBy = new PredicateSchema(IDENTIFIED);
             identifiedBy.addSuperSchema(isPredicate);
@@ -45,7 +45,7 @@ public class RelationalOntology extends Ontology implements RelationalVocabulary
                 public void validate(AbsObject value, Ontology onto) throws OntologyException
                 {
                     ObjectSchema valueSchema = onto.getSchema(value.getTypeName());
-                    if (!valueSchema.isCompatibleWith(identitySchema)) {
+                    if (!valueSchema.isCompatibleWith(identityConcept)) {
                         throw new OntologyException("Value " + value + " is not an " + IDENTITY);
                     }
                 }
@@ -54,6 +54,7 @@ public class RelationalOntology extends Ontology implements RelationalVocabulary
             this.add(doesPredicate);
             this.add(isPredicate);
             this.add(hasPredicate);
+            this.add(identityConcept);
             this.add(identifiedBy);
         } catch (OntologyException e) {
             e.printStackTrace();
