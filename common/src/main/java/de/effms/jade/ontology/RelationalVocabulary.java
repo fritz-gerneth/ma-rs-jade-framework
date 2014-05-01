@@ -21,4 +21,6 @@ public interface RelationalVocabulary
     public static String HAS_WHO = "rel_has_who";
 
     public static String HAS_WHAT = "rel_has_what";
+
+    public static String IDENTIFIED = "rel_identified";
 }

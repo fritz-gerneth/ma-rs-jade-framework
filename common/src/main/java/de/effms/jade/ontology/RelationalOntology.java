@@ -31,9 +31,13 @@ public class RelationalOntology extends Ontology implements RelationalVocabulary
             hasPredicate.add(HAS_WHO, getSchema(ConceptSchema.BASE_NAME));
             hasPredicate.add(HAS_WHAT, getSchema(ConceptSchema.BASE_NAME));
 
+            PredicateSchema identifiedBy = new PredicateSchema(IDENTIFIED);
+            identifiedBy.addSuperSchema(isPredicate);
+
             this.add(doesPredicate);
             this.add(isPredicate);
             this.add(hasPredicate);
+            this.add(identifiedBy);
         } catch (OntologyException e) {
             e.printStackTrace();
         }
