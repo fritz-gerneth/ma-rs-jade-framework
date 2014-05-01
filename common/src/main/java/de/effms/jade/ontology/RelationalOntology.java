@@ -16,7 +16,7 @@ public class RelationalOntology extends Ontology implements RelationalVocabulary
 
     private RelationalOntology()
     {
-        super(RecommenderSystemVocabulary.NAME, BasicOntology.getInstance());
+        super(NAME, BasicOntology.getInstance());
 
         try {
             PredicateSchema doesPredicate = new PredicateSchema(DOES);
