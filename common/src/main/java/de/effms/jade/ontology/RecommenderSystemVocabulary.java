@@ -20,9 +20,9 @@ public interface RecommenderSystemVocabulary
 
     public static String IS = "rs_is";
 
-    public static String IS_WHO = "rs_who";
+    public static String IS_WHO = "rs_is_who";
 
-    public static String IS_WHAT = "rs_what";
+    public static String IS_WHAT = "rs_is_what";
 
     public static String HAS = "rs_has";
 
