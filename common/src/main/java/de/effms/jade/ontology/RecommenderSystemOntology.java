@@ -7,7 +7,7 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.ReflectiveIntrospector;
 import jade.content.schema.*;
 
-public class RecommenderSystemOntology extends Ontology implements RecommenderSystemVocabulary
+public class RecommenderSystemOntology extends Ontology implements RecommenderSystemVocabulary, RelationalVocabulary
 {
     private static RecommenderSystemOntology instance = new RecommenderSystemOntology();
 
@@ -22,6 +22,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
         try {
             ConceptSchema recommenderConcept = new ConceptSchema(RECOMMENDER);
+            recommenderConcept.addSuperSchema((ConceptSchema) getSchema(IDENTITY));
 
             ConceptSchema userConcept = new ConceptSchema(USER);
             userConcept.addSuperSchema(recommenderConcept);
@@ -29,10 +30,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             ConceptSchema agentConcept = new ConceptSchema(AGENT);
             agentConcept.addSuperSchema(recommenderConcept);
 
-            ConceptSchema itemConcept = new ConceptSchema(ITEM);
-
             final ConceptSchema actionConcept = new ConceptSchema(ACTION);
-            actionConcept.addSuperSchema(itemConcept);
             actionConcept.add(ACTION_SUBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME));
             actionConcept.add(ACTION_OBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
@@ -63,7 +61,6 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             this.add(userConcept);
             this.add(agentConcept);
 
-            this.add(itemConcept);
             this.add(actionConcept);
 
             this.add(recommendationConcept);

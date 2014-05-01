@@ -10,8 +10,6 @@ public interface RecommenderSystemVocabulary
 
     public static String RECOMMENDER = "rs_recommender";
 
-    public static String ITEM = "rs_item";
-
     public static String ACTION = "rs_action";
 
     public static String ACTION_SUBJECT = "rs_action_subject";
