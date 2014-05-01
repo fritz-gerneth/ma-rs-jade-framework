@@ -6,7 +6,7 @@ import jade.content.onto.OntologyException;
 import jade.content.onto.ReflectiveIntrospector;
 import jade.content.schema.*;
 
-public class RecommenderSystemOntology extends Ontology implements RecommenderSystemVocabulary, RelationalVocabulary
+public class RecommenderSystemOntology extends Ontology implements RecommenderSystemVocabulary
 {
     private static RecommenderSystemOntology instance = new RecommenderSystemOntology();
 

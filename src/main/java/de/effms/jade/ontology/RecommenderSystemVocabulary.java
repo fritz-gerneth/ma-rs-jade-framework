@@ -1,6 +1,6 @@
 package de.effms.jade.ontology;
 
-public interface RecommenderSystemVocabulary
+public interface RecommenderSystemVocabulary extends RelationalVocabulary
 {
     public static String NAME = "de.effms.ontology.RecommenderSystem";
 
