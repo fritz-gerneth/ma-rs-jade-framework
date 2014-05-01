@@ -21,59 +21,59 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
         super(RecommenderSystemVocabulary.NAME, new Ontology[] {BasicOntology.getInstance()}, new ReflectiveIntrospector());
 
         try {
-            ConceptSchema recommenderConcept = new ConceptSchema(RecommenderSystemVocabulary.RECOMMENDER);
+            ConceptSchema recommenderConcept = new ConceptSchema(RECOMMENDER);
 
-            ConceptSchema userConcept = new ConceptSchema(RecommenderSystemVocabulary.USER);
+            ConceptSchema userConcept = new ConceptSchema(USER);
 
-            ConceptSchema userId = new ConceptSchema(RecommenderSystemVocabulary.USER_IDENTITY);
+            ConceptSchema userId = new ConceptSchema(USER_IDENTITY);
             userId.addSuperSchema(recommenderConcept);
-            userId.add(RecommenderSystemVocabulary.USER_NAME, (PrimitiveSchema) getSchema(BasicOntology.STRING));
-            userConcept.add(RecommenderSystemVocabulary.USER_UID, userId);
+            userId.add(USER_NAME, (PrimitiveSchema) getSchema(BasicOntology.STRING));
+            userConcept.add(USER_UID, userId);
 
-            ConceptSchema agentConcept = new ConceptSchema(RecommenderSystemVocabulary.AGENT);
+            ConceptSchema agentConcept = new ConceptSchema(AGENT);
             agentConcept.addSuperSchema(recommenderConcept);
 
-            ConceptSchema itemConcept = new ConceptSchema(RecommenderSystemVocabulary.ITEM);
+            ConceptSchema itemConcept = new ConceptSchema(ITEM);
 
-            final ConceptSchema actionConcept = new ConceptSchema(RecommenderSystemVocabulary.ACTION);
+            final ConceptSchema actionConcept = new ConceptSchema(ACTION);
             actionConcept.addSuperSchema(itemConcept);
-            actionConcept.add(RecommenderSystemVocabulary.ACTION_SUBJECT, new ConceptSchema(ConceptSchema.BASE_NAME));
-            actionConcept.add(RecommenderSystemVocabulary.ACTION_OBJECT, new ConceptSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
+            actionConcept.add(ACTION_SUBJECT, new ConceptSchema(ConceptSchema.BASE_NAME));
+            actionConcept.add(ACTION_OBJECT, new ConceptSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
-            PredicateSchema doesPredicate = new PredicateSchema(RecommenderSystemOntology.DOES);
-            doesPredicate.add(RecommenderSystemVocabulary.DOES_WHO, recommenderConcept);
-            doesPredicate.add(RecommenderSystemOntology.DOES_WHAT, actionConcept);
+            PredicateSchema doesPredicate = new PredicateSchema(DOES);
+            doesPredicate.add(DOES_WHO, recommenderConcept);
+            doesPredicate.add(DOES_WHAT, actionConcept);
 
-            PredicateSchema isPredicate = new PredicateSchema(RecommenderSystemOntology.IS);
-            isPredicate.add(RecommenderSystemVocabulary.IS_WHO, recommenderConcept);
-            isPredicate.add(RecommenderSystemOntology.IS_WHAT, getSchema(ConceptSchema.BASE_NAME));
+            PredicateSchema isPredicate = new PredicateSchema(IS);
+            isPredicate.add(IS_WHO, recommenderConcept);
+            isPredicate.add(IS_WHAT, getSchema(ConceptSchema.BASE_NAME));
 
-            PredicateSchema hasPredicate = new PredicateSchema(RecommenderSystemOntology.HAS);
-            hasPredicate.add(RecommenderSystemOntology.HAS_WHO, recommenderConcept);
-            hasPredicate.add(RecommenderSystemOntology.HAS_WHAT, getSchema(ConceptSchema.BASE_NAME));
+            PredicateSchema hasPredicate = new PredicateSchema(HAS);
+            hasPredicate.add(HAS_WHO, recommenderConcept);
+            hasPredicate.add(HAS_WHAT, getSchema(ConceptSchema.BASE_NAME));
 
-            AgentActionSchema recommendsConcept = new AgentActionSchema(RecommenderSystemVocabulary.RECOMMENDS);
+            AgentActionSchema recommendsConcept = new AgentActionSchema(RECOMMENDS);
             recommendsConcept.addSuperSchema(actionConcept);
-            recommendsConcept.addFacet(RecommenderSystemVocabulary.ACTION_OBJECT, new Facet()
+            recommendsConcept.addFacet(ACTION_OBJECT, new Facet()
             {
                 @Override
                 public void validate(AbsObject value, Ontology onto) throws OntologyException
                 {
                     ObjectSchema valueSchema = onto.getSchema(value.getTypeName());
                     if (!valueSchema.isCompatibleWith(actionConcept)) {
-                        throw new OntologyException("Value " + value + " is not an " + RecommenderSystemVocabulary.ACTION);
+                        throw new OntologyException("Value " + value + " is not an " + ACTION);
                     }
                 }
             });
-            recommendsConcept.add(RecommenderSystemVocabulary.RECOMMENDS_REASON, new ConceptSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
+            recommendsConcept.add(RECOMMENDS_REASON, new ConceptSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
 
-            ConceptSchema preferenceConcept = new ConceptSchema(RecommenderSystemVocabulary.PREFERENCE);
-            preferenceConcept.add(RecommenderSystemVocabulary.PREFERENCE_WHAT, (TermSchema) getSchema(TermSchema.BASE_NAME));
-            preferenceConcept.add(RecommenderSystemVocabulary.PREFERENCE_RATING, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));
-            userConcept.add(RecommenderSystemVocabulary.PREFERS, preferenceConcept, 0, ObjectSchema.UNLIMITED);
+            ConceptSchema preferenceConcept = new ConceptSchema(PREFERENCE);
+            preferenceConcept.add(PREFERENCE_WHAT, (TermSchema) getSchema(TermSchema.BASE_NAME));
+            preferenceConcept.add(PREFERENCE_RATING, (PrimitiveSchema) getSchema(BasicOntology.INTEGER));
+            userConcept.add(PREFERS, preferenceConcept, 0, ObjectSchema.UNLIMITED);
 
-            ConceptSchema situationConcept = new ConceptSchema(RecommenderSystemVocabulary.SITUATION);
-            userConcept.add(RecommenderSystemVocabulary.SITUATED, situationConcept, 0, ObjectSchema.UNLIMITED);
+            ConceptSchema situationConcept = new ConceptSchema(SITUATION);
+            userConcept.add(SITUATED, situationConcept, 0, ObjectSchema.UNLIMITED);
 
             this.add(recommenderConcept);
             this.add(userConcept);
