@@ -24,11 +24,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             ConceptSchema recommenderConcept = new ConceptSchema(RECOMMENDER);
 
             ConceptSchema userConcept = new ConceptSchema(USER);
-
-            ConceptSchema userId = new ConceptSchema(USER_IDENTITY);
-            userId.addSuperSchema(recommenderConcept);
-            userId.add(USER_NAME, (PrimitiveSchema) getSchema(BasicOntology.STRING));
-            userConcept.add(USER_UID, userId);
+            userConcept.addSuperSchema(recommenderConcept);
 
             ConceptSchema agentConcept = new ConceptSchema(AGENT);
             agentConcept.addSuperSchema(recommenderConcept);
@@ -65,7 +61,6 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
             this.add(recommenderConcept);
             this.add(userConcept);
-            this.add(userId);
             this.add(agentConcept);
 
             this.add(itemConcept);

@@ -6,12 +6,6 @@ public interface RecommenderSystemVocabulary
 
     public static String USER = "rs_user";
 
-    public static String USER_UID = "rs_user_uid";
-
-    public static String USER_IDENTITY = "rs_user_identity";
-
-    public static String USER_NAME = "rs_user_name";
-
     public static String AGENT = "rs_agent";
 
     public static String RECOMMENDER = "rs_recommender";
