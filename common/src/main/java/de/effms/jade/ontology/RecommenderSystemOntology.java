@@ -18,7 +18,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
     private RecommenderSystemOntology()
     {
-        super(RecommenderSystemVocabulary.NAME, new Ontology[] {BasicOntology.getInstance()}, new ReflectiveIntrospector());
+        super(RecommenderSystemVocabulary.NAME, new Ontology[] {RelationalOntology.getInstance(), BasicOntology.getInstance()}, new ReflectiveIntrospector());
 
         try {
             ConceptSchema recommenderConcept = new ConceptSchema(RECOMMENDER);
@@ -39,18 +39,6 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
             actionConcept.addSuperSchema(itemConcept);
             actionConcept.add(ACTION_SUBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME));
             actionConcept.add(ACTION_OBJECT, (ConceptSchema) getSchema(ConceptSchema.BASE_NAME), ObjectSchema.OPTIONAL);
-
-            PredicateSchema doesPredicate = new PredicateSchema(DOES);
-            doesPredicate.add(DOES_WHO, recommenderConcept);
-            doesPredicate.add(DOES_WHAT, actionConcept);
-
-            PredicateSchema isPredicate = new PredicateSchema(IS);
-            isPredicate.add(IS_WHO, recommenderConcept);
-            isPredicate.add(IS_WHAT, getSchema(ConceptSchema.BASE_NAME));
-
-            PredicateSchema hasPredicate = new PredicateSchema(HAS);
-            hasPredicate.add(HAS_WHO, recommenderConcept);
-            hasPredicate.add(HAS_WHAT, getSchema(ConceptSchema.BASE_NAME));
 
             AgentActionSchema recommendsConcept = new AgentActionSchema(RECOMMENDS);
             recommendsConcept.addSuperSchema(actionConcept);
@@ -82,10 +70,6 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
             this.add(itemConcept);
             this.add(actionConcept);
-
-            this.add(doesPredicate);
-            this.add(isPredicate);
-            this.add(hasPredicate);
 
             this.add(recommendsConcept);
             this.add(preferenceConcept);

@@ -12,24 +12,6 @@ public interface RecommenderSystemVocabulary
 
     public static String USER_NAME = "rs_user_name";
 
-    public static String DOES = "rs_does";
-
-    public static String DOES_WHO = "rs_does_who";
-
-    public static String DOES_WHAT = "rs_does_what";
-
-    public static String IS = "rs_is";
-
-    public static String IS_WHO = "rs_is_who";
-
-    public static String IS_WHAT = "rs_is_what";
-
-    public static String HAS = "rs_has";
-
-    public static String HAS_WHO = "rs_has_who";
-
-    public static String HAS_WHAT = "rs_has_what";
-
     public static String AGENT = "rs_agent";
 
     public static String RECOMMENDER = "rs_recommender";
