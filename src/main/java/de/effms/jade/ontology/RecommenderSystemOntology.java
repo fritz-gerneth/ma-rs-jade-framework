@@ -1,6 +1,5 @@
 package de.effms.jade.ontology;
 
-import jade.content.abs.AbsObject;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;

@@ -2,12 +2,8 @@ package de.effms.jade.agent;
 
 import de.effms.jade.agent.lifecycle.LifecycleProvidingAgent;
 import de.effms.jade.agent.lifecycle.LifecycleSubscriber;
-import jade.content.lang.Codec;
-import jade.content.lang.sl.SLCodec;
-import jade.content.onto.Ontology;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import org.slf4j.Logger;
 
