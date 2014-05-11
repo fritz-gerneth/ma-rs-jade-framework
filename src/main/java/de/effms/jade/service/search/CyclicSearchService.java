@@ -24,6 +24,16 @@ public class CyclicSearchService extends CyclicBehaviour implements SearchServic
     }
 
     @Override
+    public void cancelQuery(SearchResultListener listener, DFAgentDescription query)
+    {
+        for (ListenerEntry listenerEntry : listeners) {
+            if (listenerEntry.listener == listener && listenerEntry.query == query) {
+                this.listeners.remove(listenerEntry);
+            }
+        }
+    }
+
+    @Override
     public void action()
     {
         for (ListenerEntry listenerEntry : listeners) {
