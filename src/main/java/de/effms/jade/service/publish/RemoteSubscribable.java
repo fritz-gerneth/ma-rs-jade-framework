@@ -12,11 +12,15 @@ import jade.core.AID;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SubscriptionInitiator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
 public class RemoteSubscribable implements Subscribable
 {
+    private final Logger log = LoggerFactory.getLogger(RemoteSubscribable.class);
+
     private final Agent localAgent;
 
     private final AID remoteAgent;
@@ -46,6 +50,8 @@ public class RemoteSubscribable implements Subscribable
             e.printStackTrace();
             return null;
         }
+
+        log.info("Creating subscription", subscriptionMessage);
 
         Subscription subscription = new Subscription(query);
         SubscriptionManager subscriptionManager = new SubscriptionManager(subscriptionMessage, subscription);
@@ -87,20 +93,23 @@ public class RemoteSubscribable implements Subscribable
         @Override
         protected void handleRefuse(ACLMessage refuse)
         {
+            log.info("Subscription got cancelled");
             this.subscription.getCallback().onCancel();
         }
 
         @Override
         protected void handleInform(ACLMessage message)
         {
+            log.info("Received inform for subscription", message.toString());
             AbsContentElement contentElement;
             try {
                 contentElement = localAgent.getContentManager().extractAbsContent(message);
             } catch (Codec.CodecException | OntologyException e) {
+                // We actually should do some error handling here
                 try {
                     throw new NotUnderstoodException(message);
                 } catch (NotUnderstoodException e1) {
-                    e1.printStackTrace();
+                    log.error("Could not extract message", e1);
                 }
                 return;
             }
@@ -108,10 +117,11 @@ public class RemoteSubscribable implements Subscribable
             if (contentElement instanceof AbsPredicate) {
                 this.subscription.getCallback().onInform((AbsPredicate) contentElement);
             } else {
+                // We actually should do some error handling here
                 try {
                     throw new NotUnderstoodException("Excepting IRE for jadeSubscription. Got content " + contentElement);
                 } catch (NotUnderstoodException e) {
-                    e.printStackTrace();
+                    log.error("Could not handle subscription  message", e);
                 }
             }
         }

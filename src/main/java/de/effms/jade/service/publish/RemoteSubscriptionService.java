@@ -7,22 +7,29 @@ import jade.content.abs.AbsPredicate;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.OntologyException;
+import jade.core.AID;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SubscriptionResponder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
 
 public class RemoteSubscriptionService
 {
+    private final Logger log = LoggerFactory.getLogger(RemoteSubscriptionService.class);
+
     private final Agent localAgent;
 
     private final Subscribable publisher;
 
     private final Hashtable<String, Subscription> subscriptions = new Hashtable<>();
+
+    private final Codec language = new SLCodec();
 
     public RemoteSubscriptionService(Agent localAgent, Subscribable publisher)
     {
@@ -30,13 +37,15 @@ public class RemoteSubscriptionService
         this.publisher = publisher;
 
         Codec language = new SLCodec();
-        MessageTemplate messageTemplate = MessageTemplate.and(
+        MessageTemplate messageTemplate =  MessageTemplate.and(
             MessageTemplate.and(
-                MessageTemplate.MatchEncoding(language.getName()),
+                MessageTemplate.MatchLanguage(language.getName()),
                 MessageTemplate.MatchOntology(this.publisher.getOntology().getName())
             ),
             MessageTemplate.MatchPerformative(ACLMessage.SUBSCRIBE)
         );
+
+        log.info("Starting RemoteSubscriptionService for " + publisher.getOntology().getName() + ". Messages have to match " + messageTemplate.toString());
 
         this.localAgent.addBehaviour(
             new SubscriptionResponder(this.localAgent.asJadeAgent(), messageTemplate, new SubscriptionManager())
@@ -48,6 +57,8 @@ public class RemoteSubscriptionService
         @Override
         public boolean register(final SubscriptionResponder.Subscription jadeSubscription) throws RefuseException, NotUnderstoodException
         {
+            log.info("Received new subscriber", jadeSubscription);
+
             String conversationId = jadeSubscription.getMessage().getConversationId();
             if (subscriptions.containsKey(conversationId)) {
                 throw new RefuseException("Duplicate jadeSubscription performative for  " + conversationId);
@@ -115,13 +126,18 @@ public class RemoteSubscriptionService
         @Override
         public void onInform(AbsPredicate result)
         {
+            log.debug("New value to subscription. Informing remote agent.");
+
             ACLMessage message = new ACLMessage(ACLMessage.INFORM_REF);
+            message.setLanguage(language.getName());
+            message.setOntology(publisher.getOntology().getName());
             try {
                 localAgent.getContentManager().fillContent(message, result);
             } catch (Codec.CodecException | OntologyException e) {
                 e.printStackTrace();
                 return;
             }
+            log.info("Sending message back to subscriber: " + message.toString());
             this.jadeSubscription.notify(message);
         }
 
