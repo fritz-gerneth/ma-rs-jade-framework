@@ -14,7 +14,7 @@ public interface RecommenderSystemVocabulary extends RelationalVocabulary
 
     public static String RECOMMENDATION = "rs_recommendation";
 
-    public static String RECOMMENDATION_SUBJECT = "rs_recommendation_subject";
+    public static String RECOMMENDATION_ITEM = "rs_recommendation_item";
 
     public static String RECOMMENDATION_REASON = "rs_recommendation_reason";
 

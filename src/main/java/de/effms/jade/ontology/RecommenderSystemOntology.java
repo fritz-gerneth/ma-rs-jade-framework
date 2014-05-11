@@ -34,7 +34,7 @@ public class RecommenderSystemOntology extends Ontology implements RecommenderSy
 
             ConceptSchema recommendationConcept = new AgentActionSchema(RECOMMENDATION);
             recommendationConcept.addSuperSchema(actionConcept);
-            recommendationConcept.add(RECOMMENDATION_SUBJECT, conceptSchema);
+            recommendationConcept.add(RECOMMENDATION_ITEM, conceptSchema);
             recommendationConcept.add(RECOMMENDATION_REASON, conceptSchema);
 
             ConceptSchema preferenceConcept = new ConceptSchema(PREFERENCE);
