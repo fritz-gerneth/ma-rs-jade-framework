@@ -48,8 +48,14 @@ public class RemoteQueryService
                 return;
             }
 
-            // A message matching out message template arrived
+            // A message matching out message template arrived, extract it
             AbsContentElement contentElement = null;
+            try {
+                contentElement = agent.getContentManager().extractAbsContent(message);
+            } catch (Codec.CodecException | OntologyException e) {
+                e.printStackTrace();
+            }
+
             if (ACLMessage.QUERY_IF == message.getPerformative()) {
                 ResponseToQueryIf responseHandler = new ResponseToQueryIf(message);
 
