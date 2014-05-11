@@ -41,9 +41,15 @@ public class RemoteQueryService
         @Override
         public void action()
         {
-            ACLMessage message = agent.blockingReceive(mt);
-            AbsContentElement contentElement = null;
+            // Try to receive a message, and if not wait until the next message arrives
+            ACLMessage message = agent.receive(mt);
+            if (null == mt) {
+                this.block();
+                return;
+            }
 
+            // A message matching out message template arrived
+            AbsContentElement contentElement = null;
             if (ACLMessage.QUERY_IF == message.getPerformative()) {
                 ResponseToQueryIf responseHandler = new ResponseToQueryIf(message);
 
