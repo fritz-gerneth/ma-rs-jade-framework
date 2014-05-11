@@ -43,7 +43,7 @@ public class RemoteQueryService
         {
             // Try to receive a message, and if not wait until the next message arrives
             ACLMessage message = agent.receive(mt);
-            if (null == mt) {
+            if (null == message) {
                 this.block();
                 return;
             }
