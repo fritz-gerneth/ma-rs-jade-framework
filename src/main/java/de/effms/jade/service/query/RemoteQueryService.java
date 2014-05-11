@@ -26,9 +26,9 @@ public class RemoteQueryService
         this.agent = agent;
         this.knowledgeBase = knowledgeBase;
 
-        log.info("Starting RemoteQueryService for ontology " + knowledgeBase.getOntology().getName());
-
         this.agent.addBehaviour(new MessageReceiver());
+
+        log.info("Starting RemoteQueryService for ontology " + knowledgeBase.getOntology().getName());
     }
 
     private class MessageReceiver extends CyclicBehaviour
@@ -46,7 +46,7 @@ public class RemoteQueryService
 
         public MessageReceiver()
         {
-            log.info("Starting RemoteQueryService MessageReceiver with template" + mt.toString());
+            log.info("Starting RemoteQueryService MessageReceiver with template" + mt);
         }
 
         @Override
@@ -64,7 +64,7 @@ public class RemoteQueryService
             try {
                 contentElement = agent.getContentManager().extractAbsContent(message);
             } catch (Codec.CodecException | OntologyException e) {
-                log.error("Could not extract content from message", message, e);
+                log.error("Could not extract content from message" + message, e);
             }
 
             log.debug("Received raw message", contentElement);
@@ -75,13 +75,16 @@ public class RemoteQueryService
                     contentElement = agent.getContentManager().extractAbsContent(message);
                 } catch (Codec.CodecException | OntologyException e) {
                     responseHandler.onMessageError(e.getMessage());
+                    log.info("Received invalid message" + message);
                 }
 
                 if (contentElement instanceof AbsPredicate) {
                     AbsPredicate query = (AbsPredicate) contentElement;
+                    log.info("Delegating query to knowledge base"+ query);
                     knowledgeBase.queryIf(query, responseHandler);
                 } else {
                     responseHandler.onMessageError("Excepting predicate for query-if");
+                    log.info("Query was no predicate" + contentElement);
                 }
             } else if (ACLMessage.QUERY_REF == message.getPerformative()) {
                 ResponseToQueryRef responseHandler = new ResponseToQueryRef(message);
@@ -90,13 +93,16 @@ public class RemoteQueryService
                     contentElement = agent.getContentManager().extractAbsContent(message);
                 } catch (Codec.CodecException | OntologyException e) {
                     responseHandler.onMessageError(e.getMessage());
+                    log.info("Received invalid message" + message);
                 }
 
                 if (contentElement instanceof AbsIRE) {
                     AbsIRE query = (AbsIRE) contentElement;
+                    log.info("Delegating query to knowledge base" + query);
                     knowledgeBase.queryRef(query, responseHandler);
                 } else {
                     responseHandler.onMessageError("Excepting predicate for query-if");
+                    log.info("Query was no predicate" + contentElement);
                 }
             } else {
                 System.out.println("Received message but shouldn't be handling it: " + message.toString());
@@ -114,18 +120,18 @@ public class RemoteQueryService
         @Override
         public void onQueryRefResult(AbsIRE query, AbsPredicate result)
         {
-            AbsObject resultTerm = null;
+            /** AbsObject resultTerm = null;
             try {
                 resultTerm = knowledgeBase.getOntology().fromObject(result);
             } catch (OntologyException e) {
-                e.printStackTrace();
+                log.error("Could not serialize result", result);
             }
 
             AbsPredicate response = new AbsPredicate(SLVocabulary.EQUALS);
             response.set(SLVocabulary.EQUALS_LEFT, query);
-            response.set(SLVocabulary.EQUALS_RIGHT, resultTerm);
+            response.set(SLVocabulary.EQUALS_RIGHT, resultTerm); */
 
-            this.sendMessage(ACLMessage.QUERY_REF, response);
+            this.sendMessage(ACLMessage.QUERY_REF, result);
         }
     }
 
@@ -178,9 +184,11 @@ public class RemoteQueryService
                 agent.getContentManager().fillContent(reply, response);
             } catch (Codec.CodecException | OntologyException e) {
                 this.onMessageError(e.getMessage());
+                log.error("Could not fill response into message " + response, e);
                 return;
             }
 
+            log.debug("Scheduling message for submission " + reply);
             agent.send(reply);
         }
     }

@@ -16,11 +16,15 @@ import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
 public class RemoteQueryable implements Queryable
 {
+    private final Logger log = LoggerFactory.getLogger(RemoteQueryService.class);
+
     private final Agent agent;
 
     private final AID remoteAgent;
@@ -31,6 +35,8 @@ public class RemoteQueryable implements Queryable
 
     public RemoteQueryable(Agent agent, AID remoteAgent, Ontology ontology)
     {
+        log.info("Starting RemoteQueryable for ontology " + ontology.getName());
+
         this.agent = agent;
         this.remoteAgent = remoteAgent;
         this.ontology = ontology;
@@ -40,6 +46,8 @@ public class RemoteQueryable implements Queryable
     @Override
     public void queryIf(AbsPredicate query, QueryIfCallback callback)
     {
+        log.debug("Received query-if " + query.toString());
+
         ACLMessage message = new ACLMessage(ACLMessage.QUERY_IF);
         message.setLanguage(this.language.getName());
         message.setOntology(this.ontology.getName());
@@ -49,7 +57,7 @@ public class RemoteQueryable implements Queryable
         try {
             agent.getContentManager().fillContent(message, query);
         } catch (Codec.CodecException | OntologyException e) {
-            e.printStackTrace();
+            log.error("Could not fill query in message" + message, e);
             return;
         }
 
@@ -60,6 +68,8 @@ public class RemoteQueryable implements Queryable
     @Override
     public void queryRef(AbsIRE query, QueryRefCallback callback)
     {
+        log.debug("Received query-ref " + query.toString());
+
         ACLMessage message = new ACLMessage(ACLMessage.QUERY_REF);
         message.setLanguage(this.language.getName());
         message.setOntology(this.ontology.getName());
@@ -69,7 +79,7 @@ public class RemoteQueryable implements Queryable
         try {
             agent.getContentManager().fillContent(message, query);
         } catch (Codec.CodecException | OntologyException e) {
-            e.printStackTrace();
+            log.error("Could not fill query in message" + message, e);
             return;
         }
 
@@ -109,26 +119,36 @@ public class RemoteQueryable implements Queryable
 
             this.query = query;
             this.callback = callback;
+
+            log.info("Started waiting for query-reply on conversation " + queryMessage.getReplyWith());
+            log.debug("Exact message filter is " + this.messageTemplate);
         }
 
         @Override
         public void action()
         {
-            ACLMessage message = agent.blockingReceive(this.messageTemplate);
-            AbsContentElement contentElement = null;
+            ACLMessage message = agent.receive(this.messageTemplate);
+            if (null == message) {
+                this.block();
+                return;
+            }
 
+            AbsContentElement contentElement = null;
             try {
                 contentElement = agent.getContentManager().extractAbsContent(message);
             } catch (Codec.CodecException | OntologyException e) {
-                e.printStackTrace();
+                log.error("Could not extract message" + message, e);
             }
 
             if (contentElement instanceof AbsPrimitive) {
                 AbsPrimitive returnValue = (AbsPrimitive) contentElement;
-                if (BasicOntology.BOOLEAN == returnValue.getTypeName()) {
+                log.debug("Extracted message content" + returnValue);
+                if (BasicOntology.BOOLEAN.equals(returnValue.getTypeName())) {
                     this.callback.onQueryIfResult(this.query, returnValue.getBoolean());
+                    return;
                 }
             }
+            log.error("Unhandled message content" + contentElement);
         }
     }
 
@@ -138,12 +158,14 @@ public class RemoteQueryable implements Queryable
 
         public DelayedSend(ACLMessage message)
         {
+            log.debug("Scheduled submission of message for next cycle" +  message.toString());
             this.message = message;
         }
 
         @Override
         public void action()
         {
+            log.debug("Sending message" + message);
             agent.send(this.message);
         }
     }
@@ -174,23 +196,33 @@ public class RemoteQueryable implements Queryable
 
             this.query = query;
             this.callback = callback;
+
+            log.info("Started waiting for query-reply on conversation " + queryMessage.getReplyWith());
+            log.debug("Exact message filter is " + this.messageTemplate);
         }
 
         @Override
         public void action()
         {
-            ACLMessage message = agent.blockingReceive(this.messageTemplate);
-            AbsContentElement contentElement = null;
+            ACLMessage message = agent.receive(this.messageTemplate);
+            if (null == message) {
+                this.block();
+                return;
+            }
 
+            AbsContentElement contentElement = null;
             try {
                 contentElement = agent.getContentManager().extractAbsContent(message);
             } catch (Codec.CodecException | OntologyException e) {
-                e.printStackTrace();
+                log.error("Could not extract message " + message, e);
             }
 
             if (contentElement instanceof AbsPredicate) {
+                log.debug("Extracted message content" + contentElement);
                 this.callback.onQueryRefResult(this.query, (AbsPredicate) contentElement);
+                return;
             }
+            log.error("Unhandled message content" + contentElement);
         }
     }
 }
