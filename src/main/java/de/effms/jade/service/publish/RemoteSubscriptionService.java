@@ -128,7 +128,7 @@ public class RemoteSubscriptionService
         {
             log.debug("New value to subscription. Informing remote agent.");
 
-            ACLMessage message = new ACLMessage(ACLMessage.INFORM_REF);
+            ACLMessage message = new ACLMessage(ACLMessage.INFORM);
             message.setLanguage(language.getName());
             message.setOntology(publisher.getOntology().getName());
             try {
