@@ -10,9 +10,13 @@ import jade.content.onto.OntologyException;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RemoteQueryService
 {
+    private final Logger log = LoggerFactory.getLogger(RemoteQueryService.class);
+
     private final Queryable knowledgeBase;
 
     private final Agent agent;
@@ -21,6 +25,8 @@ public class RemoteQueryService
     {
         this.agent = agent;
         this.knowledgeBase = knowledgeBase;
+
+        log.info("Starting RemoteQueryService for ontology " + knowledgeBase.getOntology().getName());
 
         this.agent.addBehaviour(new MessageReceiver());
     }
@@ -38,6 +44,11 @@ public class RemoteQueryService
             )
         );
 
+        public MessageReceiver()
+        {
+            log.info("Starting RemoteQueryService MessageReceiver with template" + mt.toString());
+        }
+
         @Override
         public void action()
         {
@@ -53,9 +64,10 @@ public class RemoteQueryService
             try {
                 contentElement = agent.getContentManager().extractAbsContent(message);
             } catch (Codec.CodecException | OntologyException e) {
-                e.printStackTrace();
+                log.error("Could not extract content from message", message, e);
             }
 
+            log.debug("Received raw message", contentElement);
             if (ACLMessage.QUERY_IF == message.getPerformative()) {
                 ResponseToQueryIf responseHandler = new ResponseToQueryIf(message);
 
