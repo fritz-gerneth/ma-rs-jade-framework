@@ -1,6 +1,8 @@
 package de.effms.jade.service.search;
 
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAException;
@@ -10,11 +12,16 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CyclicSearchService extends CyclicBehaviour implements SearchService
+public class CyclicSearchService extends TickerBehaviour implements SearchService
 {
     private final List<ListenerEntry> listeners = new LinkedList<>();
 
     private final Logger log = LoggerFactory.getLogger(CyclicSearchService.class);
+
+    public CyclicSearchService(Agent a, long period)
+    {
+        super(a, period);
+    }
 
     @Override
     public void addSearchResultListener(SearchResultListener listener, DFAgentDescription query)
@@ -34,7 +41,7 @@ public class CyclicSearchService extends CyclicBehaviour implements SearchServic
     }
 
     @Override
-    public void action()
+    public void onTick()
     {
         for (ListenerEntry listenerEntry : listeners) {
             try {
