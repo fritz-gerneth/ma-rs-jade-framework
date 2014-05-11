@@ -134,7 +134,7 @@ public class RemoteSubscriptionService
             try {
                 localAgent.getContentManager().fillContent(message, result);
             } catch (Codec.CodecException | OntologyException e) {
-                e.printStackTrace();
+                log.error("Could not create ACLMessage", e);
                 return;
             }
             log.info("Sending message back to subscriber: " + message.toString());
