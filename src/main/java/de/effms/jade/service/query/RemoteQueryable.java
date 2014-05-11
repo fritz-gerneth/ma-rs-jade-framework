@@ -13,6 +13,7 @@ import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.core.AID;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -23,7 +24,7 @@ import java.util.UUID;
 
 public class RemoteQueryable implements Queryable
 {
-    private final Logger log = LoggerFactory.getLogger(RemoteQueryService.class);
+    private final Logger log = LoggerFactory.getLogger(RemoteQueryable.class);
 
     private final Agent agent;
 
@@ -93,7 +94,7 @@ public class RemoteQueryable implements Queryable
         return this.ontology;
     }
 
-    private class WaitForQueryRefResult extends OneShotBehaviour
+    private class WaitForQueryRefResult extends CyclicBehaviour
     {
         private final MessageTemplate messageTemplate;
 
@@ -148,7 +149,9 @@ public class RemoteQueryable implements Queryable
                     return;
                 }
             }
+
             log.error("Unhandled message content" + contentElement);
+            agent.removeBehaviour(this);
         }
     }
 
@@ -170,7 +173,7 @@ public class RemoteQueryable implements Queryable
         }
     }
 
-    private class WaitForQueryIfResult extends OneShotBehaviour
+    private class WaitForQueryIfResult extends CyclicBehaviour
     {
         private final MessageTemplate messageTemplate;
 
@@ -222,7 +225,9 @@ public class RemoteQueryable implements Queryable
                 this.callback.onQueryRefResult(this.query, (AbsPredicate) contentElement);
                 return;
             }
+
             log.error("Unhandled message content" + contentElement);
+            agent.removeBehaviour(this);
         }
     }
 }

@@ -131,7 +131,7 @@ public class RemoteQueryService
             response.set(SLVocabulary.EQUALS_LEFT, query);
             response.set(SLVocabulary.EQUALS_RIGHT, resultTerm); */
 
-            this.sendMessage(ACLMessage.QUERY_REF, result);
+            this.sendMessage(ACLMessage.INFORM_REF, result);
         }
     }
 
@@ -149,7 +149,7 @@ public class RemoteQueryService
             response.set(SLVocabulary.EQUALS_LEFT, query);
             response.set(SLVocabulary.EQUALS_RIGHT, AbsPrimitive.wrap(result));
 
-            this.sendMessage(ACLMessage.QUERY_IF, response);
+            this.sendMessage(ACLMessage.INFORM_IF, response);
         }
     }
 
