@@ -160,7 +160,7 @@ public class RemoteQueryable implements Queryable
         {
             this.messageTemplate = MessageTemplate.and(
                 MessageTemplate.and(
-                    MessageTemplate.MatchEncoding(language.getName()),
+                    MessageTemplate.MatchLanguage(language.getName()),
                     MessageTemplate.MatchOntology(ontology.getName())
                 ),
                 MessageTemplate.and(
