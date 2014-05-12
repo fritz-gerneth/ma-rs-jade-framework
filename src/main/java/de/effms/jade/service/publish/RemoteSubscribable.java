@@ -46,7 +46,7 @@ public class RemoteSubscribable implements Subscribable
         try {
             this.localAgent.getContentManager().fillContent(subscriptionMessage, query);
         } catch (Codec.CodecException | OntologyException e) {
-            e.printStackTrace();
+            log.error("Could not create subscription  message", e);
             return null;
         }
 
@@ -105,11 +105,7 @@ public class RemoteSubscribable implements Subscribable
                 contentElement = localAgent.getContentManager().extractAbsContent(message);
             } catch (Codec.CodecException | OntologyException e) {
                 // We actually should do some error handling here
-                try {
-                    throw new NotUnderstoodException(message);
-                } catch (NotUnderstoodException e1) {
-                    log.error("Could not extract message", e1);
-                }
+                log.error("Could not extract message", e);
                 return;
             }
 
