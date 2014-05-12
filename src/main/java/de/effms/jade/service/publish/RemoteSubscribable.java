@@ -1,11 +1,10 @@
 package de.effms.jade.service.publish;
 
 import de.effms.jade.agent.Agent;
-import jade.content.abs.AbsContentElement;
-import jade.content.abs.AbsIRE;
-import jade.content.abs.AbsPredicate;
+import jade.content.abs.*;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
+import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.core.AID;
@@ -114,16 +113,23 @@ public class RemoteSubscribable implements Subscribable
                 return;
             }
 
-            if (contentElement instanceof AbsPredicate) {
-                this.subscription.getCallback().onInform((AbsPredicate) contentElement);
-            } else {
-                // We actually should do some error handling here
-                try {
-                    throw new NotUnderstoodException("Excepting IRE for jadeSubscription. Got content " + contentElement);
-                } catch (NotUnderstoodException e) {
-                    log.error("Could not handle subscription  message", e);
-                }
+            if (!(contentElement instanceof AbsPredicate)) {
+                log.error("Subscription answer is no predicate");
+                return;
             }
+
+            if (!contentElement.getTypeName().equals(SLVocabulary.EQUALS)) {
+                log.error("Subscription answer is no equation");
+                return;
+            }
+
+            AbsObject rValue = contentElement.getAbsObject(SLVocabulary.EQUALS_RIGHT);
+            if (!(rValue instanceof AbsConcept)) {
+                log.error("Right-Value of equation is not concept");
+                return;
+            }
+
+            this.subscription.getCallback().onInform(this.subscription.getQuery(), (AbsConcept) rValue);
         }
     }
 }

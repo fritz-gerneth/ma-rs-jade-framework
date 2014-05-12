@@ -1,13 +1,11 @@
 package de.effms.jade.service.publish;
 
 import de.effms.jade.agent.Agent;
-import jade.content.abs.AbsContentElement;
-import jade.content.abs.AbsIRE;
-import jade.content.abs.AbsPredicate;
+import jade.content.abs.*;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
+import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.OntologyException;
-import jade.core.AID;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
@@ -124,20 +122,24 @@ public class RemoteSubscriptionService
         }
 
         @Override
-        public void onInform(AbsPredicate result)
+        public void onInform(AbsIRE query, AbsConcept result)
         {
             log.debug("New value to subscription. Informing remote agent.");
+
+            AbsPredicate boxedAnswer = new AbsPredicate(SLVocabulary.EQUALS);
+            boxedAnswer.set(SLVocabulary.EQUALS_LEFT, query);
+            boxedAnswer.set(SLVocabulary.EQUALS_RIGHT, result);
 
             ACLMessage message = new ACLMessage(ACLMessage.INFORM);
             message.setLanguage(language.getName());
             message.setOntology(publisher.getOntology().getName());
             try {
-                localAgent.getContentManager().fillContent(message, result);
+                localAgent.getContentManager().fillContent(message, boxedAnswer);
             } catch (Codec.CodecException | OntologyException e) {
                 log.error("Could not create ACLMessage", e);
                 return;
             }
-            log.info("Sending message back to subscriber: " + message.toString());
+            log.debug("Sending message back to subscriber: " + message.toString());
             this.jadeSubscription.notify(message);
         }
 
