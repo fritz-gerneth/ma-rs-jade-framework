@@ -3,12 +3,10 @@ package de.effms.jade.service.query;
 import de.effms.jade.agent.Agent;
 import jade.content.Predicate;
 import jade.content.Term;
-import jade.content.abs.AbsContentElement;
-import jade.content.abs.AbsIRE;
-import jade.content.abs.AbsPredicate;
-import jade.content.abs.AbsPrimitive;
+import jade.content.abs.*;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
+import jade.content.lang.sl.SLVocabulary;
 import jade.content.onto.BasicOntology;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
@@ -222,11 +220,17 @@ public class RemoteQueryable implements Queryable
 
             if (contentElement instanceof AbsPredicate) {
                 log.debug("Extracted message content" + contentElement);
-                this.callback.onQueryRefResult(this.query, (AbsPredicate) contentElement);
-                return;
+
+                if (contentElement.getTypeName().equals(SLVocabulary.EQUALS)) {
+                    this.callback.onQueryRefResult(
+                        this.query,
+                        (AbsConcept) contentElement.getAbsObject(SLVocabulary.EQUALS_RIGHT)
+                    );
+                } else {
+                    log.error("Unhandled message content" + contentElement);
+                }
             }
 
-            log.error("Unhandled message content" + contentElement);
             agent.removeBehaviour(this);
         }
     }

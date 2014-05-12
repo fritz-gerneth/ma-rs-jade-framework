@@ -1,7 +1,6 @@
 package de.effms.jade.service.query;
 
 import de.effms.jade.agent.Agent;
-import jade.content.Term;
 import jade.content.abs.*;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
@@ -118,9 +117,9 @@ public class RemoteQueryService
         }
 
         @Override
-        public void onQueryRefResult(AbsIRE query, AbsPredicate result)
+        public void onQueryRefResult(AbsIRE query, AbsConcept result)
         {
-            /** AbsObject resultTerm = null;
+            AbsObject resultTerm = null;
             try {
                 resultTerm = knowledgeBase.getOntology().fromObject(result);
             } catch (OntologyException e) {
@@ -129,9 +128,9 @@ public class RemoteQueryService
 
             AbsPredicate response = new AbsPredicate(SLVocabulary.EQUALS);
             response.set(SLVocabulary.EQUALS_LEFT, query);
-            response.set(SLVocabulary.EQUALS_RIGHT, resultTerm); */
+            response.set(SLVocabulary.EQUALS_RIGHT, resultTerm);
 
-            this.sendMessage(ACLMessage.INFORM_REF, result);
+            this.sendMessage(ACLMessage.INFORM_REF, response);
         }
     }
 
